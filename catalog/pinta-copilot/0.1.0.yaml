@@ -22,8 +22,10 @@ targets:
       # No hooks_template: the enroll module builds ~/.copilot/hooks/pinta-copilot.json
       # in code (per-event PINTA_COPILOT_EVENT env). PINTA_GUARD_ENDPOINT and
       # PINTA_RELAY_TOKEN are injected by the enroll module, not via env_file_keys.
+      # Namespaced (COPILOT_PLUGIN_OPTION_*) so they don't collide with Copilot's
+      # own native OTel, which reads OTEL_EXPORTER_OTLP_*.
       env_file_keys:
-        OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
-        OTEL_EXPORTER_OTLP_HEADERS: relay-token
+        COPILOT_PLUGIN_OPTION_ENDPOINT: relay-endpoint
+        COPILOT_PLUGIN_OPTION_HEADERS: relay-token
 guard:
   evaluates: true
