@@ -95,6 +95,17 @@
           "sha256": "a5942ba42d20f15f8cf62ed20c759e5773d9063d889f6f7c180f3face8783ec2"
         }
       ]
+    },
+    {
+      "id": "pinta-copilot",
+      "latest": "0.2.0",
+      "manifests": [
+        {
+          "version": "0.2.0",
+          "url": "pinta-copilot/0.2.0.yaml",
+          "sha256": "1ef366d07b440057a83ffe30663802518824f3e42c77fe294fd1030281596b6e"
+        }
+      ]
     }
   ]
 }
