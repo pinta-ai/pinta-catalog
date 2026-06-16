@@ -106,6 +106,17 @@
           "sha256": "1ef366d07b440057a83ffe30663802518824f3e42c77fe294fd1030281596b6e"
         }
       ]
+    },
+    {
+      "id": "pinta-opencode",
+      "latest": "0.2.1",
+      "manifests": [
+        {
+          "version": "0.2.1",
+          "url": "pinta-opencode/0.2.1.yaml",
+          "sha256": "4f0ce9ac03ef2ce2c914503588b2c21bc1919e402fb9f589de3fee6c08424a5e"
+        }
+      ]
     }
   ]
 }
