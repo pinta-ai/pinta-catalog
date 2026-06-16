@@ -1,14 +1,13 @@
 schema_version: 1
 id: pinta-opencode
 name: Pinta Opencode
-version: 0.1.0
+version: 0.2.1
 runtime: node
 artifact:
   type: npm-tarball
-  url: https://registry.npmjs.org/@pinta-ai/pinta-opencode/-/pinta-opencode-0.1.0.tgz
-  # TODO: real tarball sha256 once @pinta-ai/pinta-opencode@0.1.0 is published
-  sha256: "0000000000000000000000000000000000000000000000000000000000000000"
-  entrypoint: package/dist/index.js
+  url: https://registry.npmjs.org/@pinta-ai/pinta-opencode/-/pinta-opencode-0.2.1.tgz
+  sha256: "a44259fd5286dfb8ac1b748e5a57c7595b3c7781e1355b4f761f4762212732db"
+  entrypoint: package/dist/plugin.js
 ingest:
   via: manager
   type: opencode

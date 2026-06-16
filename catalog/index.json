@@ -82,12 +82,12 @@
     },
     {
       "id": "pinta-opencode",
-      "latest": "0.1.0",
+      "latest": "0.2.1",
       "manifests": [
         {
-          "version": "0.1.0",
-          "url": "pinta-opencode/0.1.0.yaml",
-          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          "version": "0.2.1",
+          "url": "pinta-opencode/0.2.1.yaml",
+          "sha256": "4f0ce9ac03ef2ce2c914503588b2c21bc1919e402fb9f589de3fee6c08424a5e"
         }
       ]
     }
