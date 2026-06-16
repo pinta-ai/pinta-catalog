@@ -82,12 +82,12 @@
     },
     {
       "id": "pinta-gemini",
-      "latest": "0.1.0",
+      "latest": "0.2.0",
       "manifests": [
         {
-          "version": "0.1.0",
-          "url": "pinta-gemini/0.1.0.yaml",
-          "sha256": "f30d911e843bead57f6d2fb59477a01a51c7f090e0edc410333496d2b41d1539"
+          "version": "0.2.0",
+          "url": "pinta-gemini/0.2.0.yaml",
+          "sha256": "a5942ba42d20f15f8cf62ed20c759e5773d9063d889f6f7c180f3face8783ec2"
         }
       ]
     }

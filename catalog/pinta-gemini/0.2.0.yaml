@@ -1,13 +1,12 @@
 schema_version: 1
 id: pinta-gemini
 name: Pinta Gemini
-version: 0.1.0
+version: 0.2.0
 runtime: node
 artifact:
   type: npm-tarball
-  url: https://registry.npmjs.org/@pinta-ai/pinta-gemini/-/pinta-gemini-0.1.0.tgz
-  # TODO: real tarball sha256 once @pinta-ai/pinta-gemini@0.1.0 is published
-  sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  url: https://registry.npmjs.org/@pinta-ai/pinta-gemini/-/pinta-gemini-0.2.0.tgz
+  sha256: "5cb5fa41a680632afa5c90a771047deeaacc1ea3e70f09263faea5fbc19c5187"
   entrypoint: package/dist/index.js
 ingest:
   via: manager
