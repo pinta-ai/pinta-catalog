@@ -1,13 +1,12 @@
 schema_version: 1
 id: pinta-copilot
 name: Pinta Copilot
-version: 0.1.0
+version: 0.2.0
 runtime: node
 artifact:
   type: npm-tarball
-  url: https://registry.npmjs.org/@pinta-ai/pinta-copilot/-/pinta-copilot-0.1.0.tgz
-  # TODO: real tarball sha256 once @pinta-ai/pinta-copilot@0.1.0 is published
-  sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  url: https://registry.npmjs.org/@pinta-ai/pinta-copilot/-/pinta-copilot-0.2.0.tgz
+  sha256: "b04a073af00ce0cf2b6ec64c600a6fece2f90a55da7b2330aceb9a539d999302"
   entrypoint: package/dist/index.js
 ingest:
   via: manager

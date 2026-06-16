@@ -82,12 +82,12 @@
     },
     {
       "id": "pinta-copilot",
-      "latest": "0.1.0",
+      "latest": "0.2.0",
       "manifests": [
         {
-          "version": "0.1.0",
-          "url": "pinta-copilot/0.1.0.yaml",
-          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          "version": "0.2.0",
+          "url": "pinta-copilot/0.2.0.yaml",
+          "sha256": "1ef366d07b440057a83ffe30663802518824f3e42c77fe294fd1030281596b6e"
         }
       ]
     }
