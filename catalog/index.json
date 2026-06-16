@@ -84,6 +84,17 @@
           "sha256": "8d5625b642d766e4c38fff457416b6ebd1a89e6500b965ab89f028c884b1a1f0"
         }
       ]
+    },
+    {
+      "id": "pinta-gemini",
+      "latest": "0.2.0",
+      "manifests": [
+        {
+          "version": "0.2.0",
+          "url": "pinta-gemini/0.2.0.yaml",
+          "sha256": "a5942ba42d20f15f8cf62ed20c759e5773d9063d889f6f7c180f3face8783ec2"
+        }
+      ]
     }
   ]
 }
