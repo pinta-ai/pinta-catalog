@@ -93,16 +93,6 @@
           "version": "0.3.0",
           "url": "pinta-gemini/0.3.0.yaml",
           "sha256": "373d7cbb5c8feef8770232283bc99f2d98a27ab223b358e53c7d08028355ef11"
-        },
-        {
-          "version": "0.2.1",
-          "url": "pinta-gemini/0.2.1.yaml",
-          "sha256": "7f1908898455713ff67689ae9d6eaed8d38c99d8cfd7cf593dec3d4d3128b8aa"
-        },
-        {
-          "version": "0.2.0",
-          "url": "pinta-gemini/0.2.0.yaml",
-          "sha256": "a5942ba42d20f15f8cf62ed20c759e5773d9063d889f6f7c180f3face8783ec2"
         }
       ]
     },
