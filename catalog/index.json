@@ -25,8 +25,13 @@
     },
     {
       "id": "pinta-cc",
-      "latest": "1.3.2",
+      "latest": "1.4.1",
       "manifests": [
+        {
+          "version": "1.4.1",
+          "url": "pinta-cc/1.4.1.yaml",
+          "sha256": "e290ac420ddaa7455c991baf370434fae9fb04a45aae2a4ae7736e580345c02f"
+        },
         {
           "version": "1.3.2",
           "url": "pinta-cc/1.3.2.yaml",
@@ -61,8 +66,13 @@
     },
     {
       "id": "pinta-codex",
-      "latest": "1.2.4",
+      "latest": "1.3.1",
       "manifests": [
+        {
+          "version": "1.3.1",
+          "url": "pinta-codex/1.3.1.yaml",
+          "sha256": "ad3fd1eb2b70485ed5544f56209a81848f521008449b56a62d1306b1a8e0b825"
+        },
         {
           "version": "1.2.4",
           "url": "pinta-codex/1.2.4.yaml",
@@ -87,8 +97,13 @@
     },
     {
       "id": "pinta-gemini",
-      "latest": "0.3.0",
+      "latest": "0.4.1",
       "manifests": [
+        {
+          "version": "0.4.1",
+          "url": "pinta-gemini/0.4.1.yaml",
+          "sha256": "453d487dc60af58ffc78164db2082ae599e6c084d9d44c0663a9f15cfaec6888"
+        },
         {
           "version": "0.3.0",
           "url": "pinta-gemini/0.3.0.yaml",
@@ -98,8 +113,13 @@
     },
     {
       "id": "pinta-copilot",
-      "latest": "0.2.0",
+      "latest": "0.3.1",
       "manifests": [
+        {
+          "version": "0.3.1",
+          "url": "pinta-copilot/0.3.1.yaml",
+          "sha256": "e8a7a77a7400c12cd7f108c075b401a0dfd7af4e761126f4471744b75725323f"
+        },
         {
           "version": "0.2.0",
           "url": "pinta-copilot/0.2.0.yaml",
@@ -109,8 +129,13 @@
     },
     {
       "id": "pinta-opencode",
-      "latest": "0.2.1",
+      "latest": "0.3.1",
       "manifests": [
+        {
+          "version": "0.3.1",
+          "url": "pinta-opencode/0.3.1.yaml",
+          "sha256": "80365bf57fbadedf5576da3aca026db5f98ba61881db35832fbc21865fb48bff"
+        },
         {
           "version": "0.2.1",
           "url": "pinta-opencode/0.2.1.yaml",
