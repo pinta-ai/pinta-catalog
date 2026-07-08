@@ -66,10 +66,23 @@ is **generated**, never hand-edited, and every change is validated in CI
 
 ## Per manager release: tag `manager-v{x.y.z}`
 
-Every manager release must cut a `manager-v{x.y.z}` tag on this repo at the catalog
-state that manager shipped against (that state's `index.json` must be parseable by
-that manager). It is the guaranteed Layer-2 fallback snapshot when a future `main`
-is incompatible. Example: `git tag manager-v0.1.8 && git push origin manager-v0.1.8`.
+Every manager release needs a `manager-v{x.y.z}` tag on this repo at the current
+`main` state (its `index.json` must be parseable by that manager). It is the
+guaranteed Layer-2 fallback snapshot when a future `main` is incompatible.
+
+Cut it with the **Tag manager release** workflow — it runs here, so the built-in
+token creates the tag (no secret needed):
+
+```bash
+gh workflow run tag-manager-release.yml -f manager_version=0.1.8 --repo pinta-ai/pinta-catalog
+```
+
+or Actions UI → **Tag manager release** → Run workflow → enter the version. rc
+collapses to the release line (`0.1.8-rc.1` → `manager-v0.1.8`); create-if-absent,
+so it's safe to re-run and it never force-moves an existing tag.
+
+> A workflow in **pinta-manager** can't do this — its `GITHUB_TOKEN` is scoped to
+> pinta-manager and can't tag another repo. That's why the tagging job lives here.
 
 ## Never do
 

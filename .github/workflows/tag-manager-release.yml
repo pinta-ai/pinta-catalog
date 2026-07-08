@@ -1,0 +1,49 @@
+name: Tag manager release
+
+# Cut the manager-v{X.Y.Z} fallback tag for a manager release.
+#
+# This runs INSIDE pinta-catalog, so the built-in GITHUB_TOKEN already has
+# contents:write here — no cross-repo PAT / App secret needed. (A workflow in
+# pinta-manager could NOT do this: its token is scoped to pinta-manager.)
+#
+# Trigger from the manager release runbook (bump-version.sh prints this):
+#   gh workflow run tag-manager-release.yml -f manager_version=0.1.8 --repo pinta-ai/pinta-catalog
+# or Actions UI → "Tag manager release" → Run workflow → enter the version.
+#
+# The tag is the guaranteed Layer-2 fallback snapshot (see PUBLISHING.md /
+# pinta-manager docs/features/v0.1.8/catalog-version-compat.md §2 / §2.2).
+on:
+  workflow_dispatch:
+    inputs:
+      manager_version:
+        description: 'Manager release version (X.Y.Z or X.Y.Z-rc.N). rc collapses to the release line.'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      INPUT: ${{ inputs.manager_version }}
+    steps:
+      - name: Create manager-v tag at main HEAD (create-if-absent)
+        run: |
+          set -euo pipefail
+          if ! echo "$INPUT" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$'; then
+            echo "::error::invalid manager_version '$INPUT' (want X.Y.Z or X.Y.Z-rc.N)"
+            exit 1
+          fi
+          TAG="manager-v${INPUT%%-*}"   # strip -rc.N -> release line
+          if gh api "repos/${REPO}/git/ref/tags/${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists — leaving as-is (never force-move a fallback tag)."
+            exit 0
+          fi
+          SHA=$(gh api "repos/${REPO}/git/ref/heads/main" -q .object.sha)
+          echo "Creating ${TAG} -> main (${SHA})"
+          gh api -X POST "repos/${REPO}/git/refs" -f ref="refs/tags/${TAG}" -f sha="${SHA}"
+          echo "::notice::Created ${TAG} at ${SHA}"
