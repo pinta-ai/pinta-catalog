@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-06-12T00:00:00Z",
+  "generated": "2026-07-08T11:54:52.213Z",
   "adaptors": [
     {
       "id": "mcp-logger",
@@ -10,16 +10,6 @@
           "version": "0.1.2",
           "url": "mcp-logger/0.1.2.yaml",
           "sha256": "cc6fdd7ffe1791775a9d84bcc907e2a2978930d7afb49efe28542968fc761739"
-        },
-        {
-          "version": "0.1.1",
-          "url": "mcp-logger/0.1.1.yaml",
-          "sha256": "614f84b40b4c6c797155b0fd65b2d6d3056268cf2c36a8001ba5ba9dc41dcb11"
-        },
-        {
-          "version": "0.1.1-dev.1",
-          "url": "mcp-logger/0.1.1-dev.1.yaml",
-          "sha256": "41bc7a1b278128052d1ca1a1daf3db940e705890a005e4eea8f1ec4cdb6d7526"
         }
       ]
     },
