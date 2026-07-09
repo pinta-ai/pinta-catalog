@@ -66,20 +66,24 @@ is **generated**, never hand-edited, and every change is validated in CI
 
 ## Per manager release: tag `manager-v{x.y.z}`
 
-Every manager release needs a `manager-v{x.y.z}` tag on this repo at the current
-`main` state (its `index.json` must be parseable by that manager). It is the
-guaranteed Layer-2 fallback snapshot when a future `main` is incompatible.
+Every manager release needs a `manager-v{x.y.z}` tag on this repo at the catalog
+state it was released against (its `index.json` must be parseable by that
+manager). It is the guaranteed Layer-2 fallback snapshot when a future `main` is
+incompatible.
 
 Cut it with the **Tag manager release** workflow — it runs here, so the built-in
 token creates the tag (no secret needed):
 
 ```bash
-gh workflow run tag-manager-release.yml -f manager_version=0.1.8 --repo pinta-ai/pinta-catalog
+gh workflow run tag-manager-release.yml --ref main -f manager_version=0.1.8 --repo pinta-ai/pinta-catalog
 ```
 
-or Actions UI → **Tag manager release** → Run workflow → enter the version. rc
-collapses to the release line (`0.1.8-rc.1` → `manager-v0.1.8`); create-if-absent,
-so it's safe to re-run and it never force-moves an existing tag.
+or Actions UI → **Tag manager release** → Run workflow → pick the branch, enter
+the version. rc collapses to the release line (`0.1.8-rc.1` → `manager-v0.1.8`).
+
+The tag is cut at the **HEAD of the branch the workflow was dispatched on** (`--ref`,
+or the UI branch dropdown), and is **force-moved** there if it already exists — so
+re-running repoints an existing `manager-v{x.y.z}` rather than leaving it as-is.
 
 > A workflow in **pinta-manager** can't do this — its `GITHUB_TOKEN` is scoped to
 > pinta-manager and can't tag another repo. That's why the tagging job lives here.

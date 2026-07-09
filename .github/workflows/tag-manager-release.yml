@@ -7,8 +7,11 @@ name: Tag manager release
 # pinta-manager could NOT do this: its token is scoped to pinta-manager.)
 #
 # Trigger from the manager release runbook (bump-version.sh prints this):
-#   gh workflow run tag-manager-release.yml -f manager_version=0.1.8 --repo pinta-ai/pinta-catalog
-# or Actions UI → "Tag manager release" → Run workflow → enter the version.
+#   gh workflow run tag-manager-release.yml --ref main -f manager_version=0.1.8 --repo pinta-ai/pinta-catalog
+# or Actions UI → "Tag manager release" → Run workflow → pick the branch, enter the version.
+#
+# The tag is cut at the HEAD of the branch the workflow was dispatched on, and is
+# force-moved there if it already exists.
 #
 # The tag is the guaranteed Layer-2 fallback snapshot (see PUBLISHING.md /
 # pinta-manager docs/features/v0.1.8/catalog-version-compat.md §2 / §2.2).
@@ -30,8 +33,9 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPO: ${{ github.repository }}
       INPUT: ${{ inputs.manager_version }}
+      BRANCH: ${{ github.ref_name }}
     steps:
-      - name: Create manager-v tag at main HEAD (create-if-absent)
+      - name: Point manager-v tag at selected branch HEAD (override)
         run: |
           set -euo pipefail
           if ! echo "$INPUT" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$'; then
@@ -39,11 +43,13 @@ jobs:
             exit 1
           fi
           TAG="manager-v${INPUT%%-*}"   # strip -rc.N -> release line
+          SHA=$(gh api "repos/${REPO}/git/ref/heads/${BRANCH}" -q .object.sha)
           if gh api "repos/${REPO}/git/ref/tags/${TAG}" >/dev/null 2>&1; then
-            echo "Tag ${TAG} already exists — leaving as-is (never force-move a fallback tag)."
-            exit 0
+            echo "Moving ${TAG} -> ${BRANCH} (${SHA})"
+            gh api -X PATCH "repos/${REPO}/git/refs/tags/${TAG}" -f sha="${SHA}" -F force=true
+            echo "::notice::Moved ${TAG} to ${SHA} (${BRANCH})"
+          else
+            echo "Creating ${TAG} -> ${BRANCH} (${SHA})"
+            gh api -X POST "repos/${REPO}/git/refs" -f ref="refs/tags/${TAG}" -f sha="${SHA}"
+            echo "::notice::Created ${TAG} at ${SHA} (${BRANCH})"
           fi
-          SHA=$(gh api "repos/${REPO}/git/ref/heads/main" -q .object.sha)
-          echo "Creating ${TAG} -> main (${SHA})"
-          gh api -X POST "repos/${REPO}/git/refs" -f ref="refs/tags/${TAG}" -f sha="${SHA}"
-          echo "::notice::Created ${TAG} at ${SHA}"
