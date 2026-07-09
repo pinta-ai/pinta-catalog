@@ -17,9 +17,11 @@ is **generated**, never hand-edited, and every change is validated in CI
 
 ## Tooling
 
+The scripts have **no dependencies** — YAML parsing and version ordering come from
+bun's built-in `Bun.YAML` and `Bun.semver`, so there is nothing to install.
+
 | Command | What |
 |---------|------|
-| `bun install` | install deps (`yaml`, `semver`) |
 | `bun run catalog:build` | regenerate `catalog/index.json` from the manifest YAMLs + `catalog.config.json` (computes sha256, sets `latest`, sorts) |
 | `bun run catalog:check` | validate without writing (what CI runs) |
 | `bun run catalog:verify-artifacts` | `catalog:check` + fetch every npm tarball and check `artifact.sha256` |

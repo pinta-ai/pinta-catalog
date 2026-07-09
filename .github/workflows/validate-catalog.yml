@@ -9,7 +9,6 @@ on:
       - 'catalog.config.json'
       - 'scripts/**'
       - 'package.json'
-      - 'bun.lock'
       - '.github/workflows/validate-catalog.yml'
   push:
     branches: [main]
@@ -26,12 +25,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      # No dependencies to install: the scripts use Bun.YAML + Bun.semver.
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
-      - name: Install deps
-        run: bun install --frozen-lockfile
 
       # Single-revision consistency: index.json matches the manifests on disk + the
       # config policy (sha256, latest floor-blind-safe, schema_version, floors, sort).

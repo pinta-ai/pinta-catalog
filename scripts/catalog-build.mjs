@@ -23,8 +23,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { parse as parseYaml } from 'yaml';
-import semver from 'semver';
+
+const parseYaml = Bun.YAML.parse;
+
+// `Bun.semver` only ships { satisfies, order } — there is no `valid`, and neither
+// primitive substitutes for one: `order("1.2", "1.2.3")` happily returns 1 and
+// `satisfies("1.2.3.4", "1.2.3.4")` is true, though node-semver rejects both. So
+// validity is its own strict check (the official semver.org regex), and ordering
+// delegates to Bun.semver.order — which throws on input this regex would reject.
+const SEMVER_RE =
+  /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
+const isSemver = (v) => typeof v === 'string' && SEMVER_RE.test(v);
+const lte = (a, b) => Bun.semver.order(a, b) <= 0;
+const rcompare = (a, b) => Bun.semver.order(b, a); // newest first
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CATALOG_DIR = path.join(ROOT, 'catalog');
@@ -56,7 +67,7 @@ function sha256File(p) {
 function latestEligible(floor, oldest) {
   if (!floor) return true;
   if (oldest == null) return false;
-  return semver.lte(floor, oldest);
+  return lte(floor, oldest);
 }
 
 // Build the expected index model from disk + config. Returns { model, adaptorOrder }.
@@ -68,11 +79,15 @@ function buildModel(config) {
     if (id.startsWith('//')) continue;
     for (const [ver, floor] of Object.entries(byVer)) {
       if (ver.startsWith('//')) continue;
-      if (!semver.valid(floor)) fail(`manifestFloors[${id}][${ver}] = "${floor}" is not valid semver`);
+      if (!isSemver(floor)) fail(`manifestFloors[${id}][${ver}] = "${floor}" is not valid semver`);
     }
   }
-  if (config.indexMinimumRequiredManagerVersion != null && !semver.valid(config.indexMinimumRequiredManagerVersion)) {
+  if (config.indexMinimumRequiredManagerVersion != null && !isSemver(config.indexMinimumRequiredManagerVersion)) {
     fail(`indexMinimumRequiredManagerVersion = "${config.indexMinimumRequiredManagerVersion}" is not valid semver`);
+  }
+  // Guard before latestEligible() hands it to Bun.semver.order, which throws on bad input.
+  if (config.oldestSupportedFloorBlind != null && !isSemver(config.oldestSupportedFloorBlind)) {
+    fail(`oldestSupportedFloorBlind = "${config.oldestSupportedFloorBlind}" is not valid semver`);
   }
 
   const adaptorIds = fs
@@ -101,7 +116,12 @@ function buildModel(config) {
         fail(`${id}/${file}: YAML parse error: ${e.message}`);
         continue;
       }
-      if (!semver.valid(version)) fail(`${id}/${file}: filename "${version}" is not valid semver`);
+      if (!isSemver(version)) {
+        // Skip it: the sort below feeds versions to Bun.semver.order, which throws
+        // on invalid input and would mask this (and every other) error message.
+        fail(`${id}/${file}: filename "${version}" is not valid semver`);
+        continue;
+      }
       if (obj?.schema_version !== config.expectedSchemaVersion) {
         fail(`${id}/${file}: schema_version ${obj?.schema_version} != expected ${config.expectedSchemaVersion}`);
       }
@@ -118,7 +138,7 @@ function buildModel(config) {
       manifests.push(entry);
     }
 
-    manifests.sort((a, b) => semver.rcompare(a.version, b.version)); // newest first
+    manifests.sort((a, b) => rcompare(a.version, b.version)); // newest first
 
     // latest = highest floor-blind-safe version.
     const eligible = manifests.filter((m) => latestEligible(m.minimumRequiredManagerVersion, config.oldestSupportedFloorBlind));
@@ -131,7 +151,7 @@ function buildModel(config) {
       );
       latest = manifests[0]?.version; // best effort so the rest of the report still renders
     } else {
-      latest = eligible.map((m) => m.version).sort(semver.rcompare)[0];
+      latest = eligible.map((m) => m.version).sort(rcompare)[0];
     }
 
     adaptors.push({ id, latest, manifests });

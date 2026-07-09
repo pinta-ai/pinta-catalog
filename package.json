@@ -8,9 +8,5 @@
     "catalog:build": "bun scripts/catalog-build.mjs",
     "catalog:check": "bun scripts/catalog-build.mjs --check",
     "catalog:verify-artifacts": "bun scripts/catalog-build.mjs --check --verify-artifacts"
-  },
-  "devDependencies": {
-    "semver": "^7.6.3",
-    "yaml": "^2.5.1"
   }
 }
