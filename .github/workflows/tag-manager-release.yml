@@ -1,0 +1,55 @@
+name: Tag manager release
+
+# Cut the manager-v{X.Y.Z} fallback tag for a manager release.
+#
+# This runs INSIDE pinta-catalog, so the built-in GITHUB_TOKEN already has
+# contents:write here — no cross-repo PAT / App secret needed. (A workflow in
+# pinta-manager could NOT do this: its token is scoped to pinta-manager.)
+#
+# Trigger from the manager release runbook (bump-version.sh prints this):
+#   gh workflow run tag-manager-release.yml --ref main -f manager_version=0.1.8 --repo pinta-ai/pinta-catalog
+# or Actions UI → "Tag manager release" → Run workflow → pick the branch, enter the version.
+#
+# The tag is cut at the HEAD of the branch the workflow was dispatched on, and is
+# force-moved there if it already exists. It is a MOVING pointer: re-dispatch it as
+# new wrapper versions land, so managers in Layer-2 fallback keep seeing them.
+# The invariant is parseability, not immutability — never move a line's tag past a
+# schema_version bump that manager can't read. See docs/manager-compat.md.
+on:
+  workflow_dispatch:
+    inputs:
+      manager_version:
+        description: 'Manager release version (X.Y.Z or X.Y.Z-rc.N). rc collapses to the release line.'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      INPUT: ${{ inputs.manager_version }}
+      BRANCH: ${{ github.ref_name }}
+    steps:
+      - name: Point manager-v tag at selected branch HEAD (override)
+        run: |
+          set -euo pipefail
+          if ! echo "$INPUT" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$'; then
+            echo "::error::invalid manager_version '$INPUT' (want X.Y.Z or X.Y.Z-rc.N)"
+            exit 1
+          fi
+          TAG="manager-v${INPUT%%-*}"   # strip -rc.N -> release line
+          SHA=$(gh api "repos/${REPO}/git/ref/heads/${BRANCH}" -q .object.sha)
+          if gh api "repos/${REPO}/git/ref/tags/${TAG}" >/dev/null 2>&1; then
+            echo "Moving ${TAG} -> ${BRANCH} (${SHA})"
+            gh api -X PATCH "repos/${REPO}/git/refs/tags/${TAG}" -f sha="${SHA}" -F force=true
+            echo "::notice::Moved ${TAG} to ${SHA} (${BRANCH})"
+          else
+            echo "Creating ${TAG} -> ${BRANCH} (${SHA})"
+            gh api -X POST "repos/${REPO}/git/refs" -f ref="refs/tags/${TAG}" -f sha="${SHA}"
+            echo "::notice::Created ${TAG} at ${SHA} (${BRANCH})"
+          fi

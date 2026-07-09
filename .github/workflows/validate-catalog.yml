@@ -1,0 +1,61 @@
+name: Validate catalog
+
+# Mechanical guardrails for the catalog index. See PUBLISHING.md.
+# Runs on every change to the catalog or its tooling.
+on:
+  pull_request:
+    paths:
+      - 'catalog/**'
+      - 'catalog.config.json'
+      - 'scripts/**'
+      - 'package.json'
+      - '.github/workflows/validate-catalog.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'catalog/**'
+      - 'catalog.config.json'
+      - 'scripts/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # No dependencies to install: the scripts use Bun.YAML + Bun.semver.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # Single-revision consistency: index.json matches the manifests on disk + the
+      # config policy (sha256, latest floor-blind-safe, schema_version, floors, sort).
+      - name: catalog:check
+        run: bun run catalog:check
+
+      # History rules (immutable published manifests, no healthy removals) — needs the
+      # base revision, so PR-only.
+      - name: Fetch base
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          git worktree add /tmp/base FETCH_HEAD
+
+      - name: catalog history diff
+        if: github.event_name == 'pull_request'
+        run: bun scripts/check-index-diff.mjs /tmp/base/catalog catalog
+
+      # Verify the real npm tarball hash for manifests changed in THIS PR only
+      # (past versions are not re-fetched — see PUBLISHING.md).
+      - name: verify changed artifacts
+        if: github.event_name == 'pull_request'
+        run: |
+          CHANGED=$(git diff --name-only FETCH_HEAD -- 'catalog/**/*.yaml' | tr '\n' ' ')
+          if [ -n "$CHANGED" ]; then
+            echo "Changed manifests: $CHANGED"
+            bun scripts/catalog-build.mjs --check --verify-artifacts $CHANGED
+          else
+            echo "No manifest YAML changed — skipping artifact fetch."
+          fi

@@ -1,0 +1,16 @@
+{
+  "//": "Publishing policy for the catalog index. Consumed by scripts/catalog-build.mjs.",
+
+  "expectedSchemaVersion": 1,
+  "//expectedSchemaVersion": "The index schema_version the build enforces. Bumping this is a BREAKING format change: do NOT bump it on the `main` catalog (pre-v0.1.8 managers have no fallback and will hard-fail). Introduce v2 on a new default branch instead — see pinta-manager docs/features/v0.1.8/catalog-version-compat.md §2.1.",
+
+  "oldestSupportedFloorBlind": null,
+  "//oldestSupportedFloorBlind": "The oldest manager version we still protect via `latest`. A version is eligible to be an adaptor's `latest` when it has NO minimumRequiredManagerVersion floor, OR its floor <= this value. null (default) = only floor-free versions may be `latest` — the safe posture while pre-v0.1.8 (floor-blind) managers exist, since they install `latest` blindly and ignore floors. Raise this (e.g. \"0.1.8\") only once the older cohort is retired. See §2.2.",
+
+  "indexMinimumRequiredManagerVersion": null,
+  "//indexMinimumRequiredManagerVersion": "Optional index-level floor written to the top of index.json. Leave null. Setting it forces EVERY v0.1.8+ manager into Layer-2 fallback (self-inflicted), and pre-v0.1.8 ignores it anyway — only set it when the index format is genuinely unreadable by older managers. See §0.4.",
+
+  "manifestFloors": {
+    "//": "Per-manifest compatibility floors, lifted into index.json manifests[].minimumRequiredManagerVersion. Shape: { \"<adaptor-id>\": { \"<version>\": \"<min-manager-version>\" } }. Kept here (not in the manifest YAML) so floors never risk the manager's manifest schema. Example: { \"pinta-cc\": { \"2.0.0\": \"0.1.8\" } }."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "pinta-catalog",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Deployment guardrails for the pinta-catalog index (generator + validators).",
+  "scripts": {
+    "catalog:build": "bun scripts/catalog-build.mjs",
+    "catalog:check": "bun scripts/catalog-build.mjs --check",
+    "catalog:verify-artifacts": "bun scripts/catalog-build.mjs --check --verify-artifacts"
+  }
+}
