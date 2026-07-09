@@ -68,10 +68,9 @@ bun's built-in `Bun.YAML` and `Bun.semver`, so there is nothing to install.
 
 ## Per manager release: tag `manager-v{x.y.z}`
 
-Every manager release needs a `manager-v{x.y.z}` tag on this repo at the catalog
-state it was released against (its `index.json` must be parseable by that
-manager). It is the guaranteed Layer-2 fallback snapshot when a future `main` is
-incompatible.
+Every manager release needs a `manager-v{x.y.z}` tag on this repo, pointing at a
+catalog state whose `index.json` is parseable by that manager. It is the
+guaranteed Layer-2 fallback when a future `main` is incompatible.
 
 Cut it with the **Tag manager release** workflow — it runs here, so the built-in
 token creates the tag (no secret needed):
@@ -84,8 +83,13 @@ or Actions UI → **Tag manager release** → Run workflow → pick the branch, 
 the version. rc collapses to the release line (`0.1.8-rc.1` → `manager-v0.1.8`).
 
 The tag is cut at the **HEAD of the branch the workflow was dispatched on** (`--ref`,
-or the UI branch dropdown), and is **force-moved** there if it already exists — so
-re-running repoints an existing `manager-v{x.y.z}` rather than leaving it as-is.
+or the UI branch dropdown), and is **force-moved** there if it already exists.
+
+Re-dispatch it as new wrapper versions land: a manager in Layer-2 fallback reads the
+catalog through its tag, so a tag left behind pins that manager to the catalog as of
+its release day. The invariant is that the tag stays **parseable** by that manager —
+see [`docs/manager-compat.md`](docs/manager-compat.md), which covers the one case
+where it must stop advancing (a `schema_version` bump).
 
 > A workflow in **pinta-manager** can't do this — its `GITHUB_TOKEN` is scoped to
 > pinta-manager and can't tag another repo. That's why the tagging job lives here.

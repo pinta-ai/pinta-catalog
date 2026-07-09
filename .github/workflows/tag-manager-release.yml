@@ -11,10 +11,10 @@ name: Tag manager release
 # or Actions UI → "Tag manager release" → Run workflow → pick the branch, enter the version.
 #
 # The tag is cut at the HEAD of the branch the workflow was dispatched on, and is
-# force-moved there if it already exists.
-#
-# The tag is the guaranteed Layer-2 fallback snapshot (see PUBLISHING.md /
-# pinta-manager docs/features/v0.1.8/catalog-version-compat.md §2 / §2.2).
+# force-moved there if it already exists. It is a MOVING pointer: re-dispatch it as
+# new wrapper versions land, so managers in Layer-2 fallback keep seeing them.
+# The invariant is parseability, not immutability — never move a line's tag past a
+# schema_version bump that manager can't read. See docs/manager-compat.md.
 on:
   workflow_dispatch:
     inputs:
