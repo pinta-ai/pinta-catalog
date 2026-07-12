@@ -1,0 +1,31 @@
+schema_version: 1
+id: pinta-gemini
+name: Pinta Gemini
+version: 0.6.0
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-gemini/-/pinta-gemini-0.6.0.tgz
+  sha256: "880f06c1ebc534350e7189578273c6da6f19fa05d0b2cf98a7fb080005c8d555"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: gemini
+targets:
+  # One adaptor binary covers BOTH Gemini-family hosts (single --agent arg):
+  #   - Gemini CLI    → ~/.gemini/extensions/pinta-gemini/ (extension; bypasses
+  #                     the folder-trust gate that skips settings.json hooks)
+  #   - Antigravity   → ~/.gemini/config/hooks.json (global; agy v1.0.x + 2.0)
+  # The enroll module (gemini-plugin) builds both hook structures in code, so
+  # there is no hooks_template. PINTA_GUARD_ENDPOINT is injected by the enroll
+  # module. Namespaced GEMINI_PLUGIN_OPTION_* so they don't collide with Gemini
+  # CLI's own native OTel (which reads OTEL_EXPORTER_OTLP_*).
+  - client: gemini
+    install:
+      type: gemini-plugin
+      dist_root: package/dist
+      env_file_keys:
+        GEMINI_PLUGIN_OPTION_ENDPOINT: relay-endpoint
+        GEMINI_PLUGIN_OPTION_HEADERS: relay-token
+guard:
+  evaluates: true
