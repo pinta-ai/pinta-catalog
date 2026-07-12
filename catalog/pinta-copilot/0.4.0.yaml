@@ -1,0 +1,30 @@
+schema_version: 1
+id: pinta-copilot
+name: Pinta Copilot
+version: 0.4.0
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-copilot/-/pinta-copilot-0.4.0.tgz
+  sha256: "28760b03e176c27d4a8aad81482ecf33e5030c6477baab0ab699f14098d1dbcc"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: copilot
+targets:
+  # One adaptor file covers both the Copilot CLI and the VS Code extension —
+  # they read the same ~/.copilot/hooks/ file (no VS Code setting required).
+  - client: copilot
+    install:
+      type: copilot
+      dist_root: package/dist
+      # No hooks_template: the enroll module builds ~/.copilot/hooks/pinta-copilot.json
+      # in code (per-event PINTA_COPILOT_EVENT env). PINTA_GUARD_ENDPOINT and
+      # PINTA_RELAY_TOKEN are injected by the enroll module, not via env_file_keys.
+      # Namespaced (COPILOT_PLUGIN_OPTION_*) so they don't collide with Copilot's
+      # own native OTel, which reads OTEL_EXPORTER_OTLP_*.
+      env_file_keys:
+        COPILOT_PLUGIN_OPTION_ENDPOINT: relay-endpoint
+        COPILOT_PLUGIN_OPTION_HEADERS: relay-token
+guard:
+  evaluates: true
