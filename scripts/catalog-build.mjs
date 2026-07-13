@@ -66,7 +66,11 @@ function sha256File(p) {
 // still protect. null oldest => only floor-free versions qualify (safe default).
 function latestEligible(floor, oldest) {
   if (!floor) return true;
-  if (oldest == null) return false;
+  // A non-semver `oldest` was already collected as an error upstream; treat it as
+  // "no floor-blind cohort to protect" so we never hand bad input to Bun.semver.order
+  // (which would throw and mask the collected report). Same for an invalid floor,
+  // which we never attach to an entry (see buildModel).
+  if (oldest == null || !isSemver(oldest)) return false;
   return lte(floor, oldest);
 }
 
@@ -134,7 +138,11 @@ function buildModel(config) {
 
       const floor = floorCfg[id]?.[version];
       const entry = { version, url: `${id}/${file}`, sha256: sha256File(full) };
-      if (floor) entry.minimumRequiredManagerVersion = floor;
+      // Only attach a VALID floor. An invalid one was already reported by the config
+      // check above; attaching it here would feed Bun.semver.order (via latestEligible)
+      // and throw, masking the whole collected error report. Mirror the invalid-filename
+      // skip above — keep the entry floor-free so the report can still render.
+      if (floor && isSemver(floor)) entry.minimumRequiredManagerVersion = floor;
       manifests.push(entry);
     }
 
@@ -267,7 +275,11 @@ async function main() {
   // Preserve `generated` when nothing changed, else stamp now.
   const same = existing && normalize(existing) === normalize(model);
   const generated = same ? existing.generated : new Date().toISOString();
-  fs.writeFileSync(INDEX_PATH, serialize(model, existing, generated));
+  // Atomic write: a killed build must never leave a truncated index.json on disk.
+  // Write a sibling temp file, then rename (atomic on the same filesystem).
+  const tmpPath = `${INDEX_PATH}.tmp`;
+  fs.writeFileSync(tmpPath, serialize(model, existing, generated));
+  fs.renameSync(tmpPath, INDEX_PATH);
   console.log(same ? 'catalog/index.json already up to date (no content change).' : `catalog/index.json regenerated (generated=${generated}).`);
 }
 

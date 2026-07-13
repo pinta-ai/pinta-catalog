@@ -31,11 +31,23 @@ if (!baseDir || !headDir) {
   process.exit(2);
 }
 
+// null ONLY when the file is genuinely absent (ENOENT) — a legitimate "new/first
+// commit" skip. A present-but-unparseable index (corrupt/half-written) must NOT be
+// mistaken for "missing" and silently disable the history guards below; surface it.
 const readIndex = (dir) => {
+  const p = path.join(dir, 'index.json');
+  let raw;
   try {
-    return JSON.parse(fs.readFileSync(path.join(dir, 'index.json'), 'utf-8'));
-  } catch {
-    return null;
+    raw = fs.readFileSync(p, 'utf-8');
+  } catch (e) {
+    if (e.code === 'ENOENT') return null;
+    throw e; // permission/IO error — real, don't swallow
+  }
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    console.error(`✗ ${p} exists but is not valid JSON (corrupt index): ${e.message}`);
+    process.exit(1);
   }
 };
 const fileSha = (dir, url) => {
