@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-10T03:27:18.393Z",
+  "generated": "2026-08-11T05:39:07.752Z",
   "adaptors": [
     {
       "id": "mcp-logger",
@@ -135,8 +135,13 @@
     },
     {
       "id": "pinta-musecode",
-      "latest": "0.1.0",
+      "latest": "0.1.1",
       "manifests": [
+        {
+          "version": "0.1.1",
+          "url": "pinta-musecode/0.1.1.yaml",
+          "sha256": "ad3f7f4b6609fba6f80550e99cd09e1a98339f9e2dcabf2b1ff79a21e90e8b1b"
+        },
         {
           "version": "0.1.0",
           "url": "pinta-musecode/0.1.0.yaml",
