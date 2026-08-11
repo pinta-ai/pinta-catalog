@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-10T03:27:18.393Z",
+  "generated": "2026-08-11T04:46:26.758Z",
   "adaptors": [
     {
       "id": "mcp-logger",
@@ -140,7 +140,7 @@
         {
           "version": "0.1.0",
           "url": "pinta-musecode/0.1.0.yaml",
-          "sha256": "7de3814beaeac4a68e639861fbe9e593028001d2f7d64bc20704d92c7af632e4"
+          "sha256": "0b09561c7dc2e0257f9decdeeaa2d073957715fb0029ba96e1b2d5950a0a67c9"
         }
       ]
     }

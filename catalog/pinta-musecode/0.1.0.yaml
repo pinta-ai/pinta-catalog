@@ -21,7 +21,13 @@ targets:
       dist_root: package/dist
       hooks_template: package/hooks/managed-hooks.template.json
       env_file_keys:
-        OTEL_EXPORTER_OTLP_ENDPOINT: relay-endpoint
+        # `_TRACES_`, not the bare `OTEL_EXPORTER_OTLP_ENDPOINT`: relay-endpoint
+        # resolves to the COMPLETE traces URL, and only the signal-specific
+        # variable is used verbatim. The non-signal one is a base URL that an
+        # exporter appends `/v1/traces` to, giving `/v1/traces/v1/traces` --
+        # a path the sidecar relay does not serve, so every span is dropped
+        # while enrollment still reports success. Same form as pinta-codex.
+        OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
         OTEL_EXPORTER_OTLP_HEADERS: relay-token
 guard:
   evaluates: true
