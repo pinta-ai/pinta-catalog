@@ -1,0 +1,27 @@
+schema_version: 1
+id: pinta-musecode
+name: Pinta Muse Code
+version: 0.1.0
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-musecode/-/pinta-musecode-0.1.0.tgz
+  sha256: "800def5aab661d8b90eb8d60d00c31d425d36d378c49149e871a0cb711f48fc5"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: musecode
+targets:
+  # Muse Code publishes no hook API -- `muse --help` does not mention hooks --
+  # so this contract was recovered by observing the 0.1.0-R708.1 binary, not
+  # from vendor documentation. It can change without notice.
+  - client: musecode
+    install:
+      type: musecode
+      dist_root: package/dist
+      hooks_template: package/hooks/managed-hooks.template.json
+      env_file_keys:
+        OTEL_EXPORTER_OTLP_ENDPOINT: relay-endpoint
+        OTEL_EXPORTER_OTLP_HEADERS: relay-token
+guard:
+  evaluates: true
