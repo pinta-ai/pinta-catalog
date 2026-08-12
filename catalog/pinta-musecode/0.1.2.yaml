@@ -6,7 +6,7 @@ runtime: node
 artifact:
   type: npm-tarball
   url: https://registry.npmjs.org/@pinta-ai/pinta-musecode/-/pinta-musecode-0.1.2.tgz
-  sha256: "8796920064c977aa78165a393de71be05eac1df481b3835c9d66a7e441677cb3"
+  sha256: "b5dd1a16041163d6e678e126cefd769fd3927aa760e0df0916f96024ac0c9777"
   entrypoint: package/dist/index.js
 ingest:
   via: manager
