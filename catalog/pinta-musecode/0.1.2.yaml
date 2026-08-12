@@ -1,0 +1,35 @@
+schema_version: 1
+id: pinta-musecode
+name: Pinta Muse Code
+version: 0.1.2
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-musecode/-/pinta-musecode-0.1.2.tgz
+  sha256: "8796920064c977aa78165a393de71be05eac1df481b3835c9d66a7e441677cb3"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: musecode
+targets:
+  # Muse Code publishes no hook API -- `muse --help` does not mention hooks --
+  # so this contract was recovered by observing the 0.1.0-R708.1 binary, not
+  # from vendor documentation. It can change without notice.
+  - client: musecode
+    install:
+      type: musecode
+      dist_root: package/dist
+      hooks_template: package/hooks/managed-hooks.template.json
+      env_file_keys:
+        # _TRACES_ENDPOINT, not _ENDPOINT. `relay-endpoint` resolves to the
+        # COMPLETE traces URL (http://127.0.0.1:<port>/v1/traces), and
+        # OTEL_EXPORTER_OTLP_ENDPOINT is the non-signal BASE url -- an exporter
+        # appends the signal path to it and posts to /v1/traces/v1/traces. The
+        # sidecar relay routes only POST /v1/traces, so 0.1.0 dropped every
+        # span while enrollment still reported success. Measured against the
+        # published tarball: _ENDPOINT -> /v1/traces/v1/traces, _TRACES_ENDPOINT
+        # -> /v1/traces. pinta-codex already uses this form.
+        OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
+        OTEL_EXPORTER_OTLP_HEADERS: relay-token
+guard:
+  evaluates: true
