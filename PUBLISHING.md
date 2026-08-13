@@ -50,6 +50,47 @@ bun's built-in `Bun.YAML` and `Bun.semver`, so there is nothing to install.
 - Raising `oldestSupportedFloorBlind` (letting `latest` advance into floored versions)
   is a deliberate call — only once the old cohort is retired.
 
+## Delivery: `main` is not a release channel
+
+**Merging an adaptor here does not ship it.** A manager resolves its catalog URL in
+this order (pinta-manager `sidecar/src/catalog/config.ts`):
+
+1. `PINTA_CATALOG_URL` — env override, dev builds only
+2. **`catalogBranch`** — a feature flag pushed by the backend, e.g. `release/v0.1.9-rc.1`
+3. `main` — the default, reached only when no flag is set
+
+In practice the backend always sets the flag, so a shipped manager reads a
+**`release/v*` branch**. An adaptor that exists only on `main` is installable by
+nobody.
+
+This is not hypothetical: `pinta-musecode` 0.1.2 was published to npm and merged to
+`main`, and was still invisible in the app — the active release branch had no
+manifest for it (PTA-147).
+
+A release branch is **not** a subset of `main`. It carries its own, often newer,
+versions (`pinta-cc` was 1.6.0 there while `main` had 1.4.1), so you cannot reconcile
+by merging `main` into it. Backport the single manifest instead:
+
+```bash
+git fetch origin release/v0.1.9-rc.1
+git checkout -b backport/<adaptor> origin/release/v0.1.9-rc.1
+git checkout origin/main -- catalog/<id>/<version>.yaml
+bun run catalog:build            # regenerate index.json on THIS branch
+bun run catalog:verify-artifacts
+# open a PR against the release branch — never push to it directly
+```
+
+`bun run catalog:coverage` reports which adaptors are missing from which release
+lines. CI runs it on every PR as a **non-blocking** annotation: the release branch
+belongs to whoever cut it, so a `main` PR is not required to backport into it — but
+you should not be able to miss that the gap exists.
+
+```
+release/v0.1.9-rc.1 [ACTIVE]  ✗ MISSING 1: pinta-musecode
+```
+
+Frozen older lines are listed for context and never gated on.
+
 ## Immutability & pruning
 
 - **Published manifests are immutable.** A shipped `<id>/<version>.yaml` must not be

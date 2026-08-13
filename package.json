@@ -7,6 +7,7 @@
   "scripts": {
     "catalog:build": "bun scripts/catalog-build.mjs",
     "catalog:check": "bun scripts/catalog-build.mjs --check",
+    "catalog:coverage": "bun scripts/check-branch-coverage.mjs",
     "catalog:verify-artifacts": "bun scripts/catalog-build.mjs --check --verify-artifacts"
   }
 }
