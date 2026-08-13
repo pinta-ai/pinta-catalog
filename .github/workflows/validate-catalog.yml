@@ -59,3 +59,22 @@ jobs:
           else
             echo "No manifest YAML changed — skipping artifact fetch."
           fi
+
+      # Advisory: an adaptor on `main` that no release branch carries is shipped to
+      # nobody, because managers resolve the catalog through `catalogBranch`, not
+      # `main`. Never gates — a release line is owned by whoever cut it and a `main`
+      # PR cannot be required to backport into it. See PUBLISHING.md.
+      - name: delivery coverage (advisory)
+        run: |
+          git fetch --no-tags --quiet origin '+refs/heads/release/*:refs/remotes/origin/release/*' || true
+          bun scripts/check-branch-coverage.mjs | tee /tmp/coverage.txt
+          {
+            echo '### Delivery coverage'
+            echo
+            echo '```'
+            cat /tmp/coverage.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if grep -q 'The ACTIVE release line cannot deliver' /tmp/coverage.txt; then
+            echo "::warning title=Adaptor not delivered::An adaptor on main is missing from the active release branch, so no manager can install it. See the job summary."
+          fi
