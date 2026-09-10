@@ -1,0 +1,24 @@
+schema_version: 1
+id: pinta-codex
+name: Pinta Codex
+version: 1.5.0
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-codex/-/pinta-codex-1.5.0.tgz
+  sha256: "1663ee7677f2504a172e3dae29f65d71fc433f10bae5bde10d742d11a839c91e"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: codex
+targets:
+  - client: codex
+    install:
+      type: codex-plugin
+      dist_root: package/dist
+      hooks_template: package/hooks.json
+      env_file_keys:
+        OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
+        OTEL_EXPORTER_OTLP_HEADERS: relay-token
+guard:
+  evaluates: true
