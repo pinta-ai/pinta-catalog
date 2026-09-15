@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-09-15T04:09:00.987Z",
+  "generated": "2026-09-15T08:03:38.125Z",
   "adaptors": [
     {
       "id": "mcp-logger",
@@ -112,8 +112,13 @@
     },
     {
       "id": "pinta-gemini",
-      "latest": "0.9.0",
+      "latest": "0.10.0",
       "manifests": [
+        {
+          "version": "0.10.0",
+          "url": "pinta-gemini/0.10.0.yaml",
+          "sha256": "4da0c7277fd1bf26096a562d4812ef1eeb0627013d804d574817b215ac8508d7"
+        },
         {
           "version": "0.9.0",
           "url": "pinta-gemini/0.9.0.yaml",
