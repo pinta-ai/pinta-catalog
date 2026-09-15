@@ -1,0 +1,32 @@
+schema_version: 1
+id: pinta-opencode
+name: Pinta Opencode
+version: 0.8.0
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-opencode/-/pinta-opencode-0.8.0.tgz
+  sha256: "95a5a446aac303593d100123358a33b36be04c00c139bc60cff5f466b037ee79"
+  entrypoint: package/dist/plugin.js
+ingest:
+  via: manager
+  type: opencode
+targets:
+  # opencode loads the plugin in-process via ~/.config/opencode/opencode.json
+  # (plugin array of [package_name, options]) plus a sibling
+  # ~/.config/opencode/pinta-opencode.env file for the relay credentials.
+  - client: opencode
+    install:
+      type: opencode-plugin
+      dist_root: package/dist
+      package_name: "@pinta-ai/pinta-opencode"
+      plugin_options:
+        endpoint: relay-endpoint
+        guard: relay-guard-endpoint
+        token: relay-token-raw
+      env_file_keys:
+        PINTA_OPENCODE_ENDPOINT: relay-endpoint
+        PINTA_OPENCODE_GUARD: relay-guard-endpoint
+        PINTA_OPENCODE_TOKEN: relay-token-raw
+guard:
+  evaluates: true
