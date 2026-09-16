@@ -85,11 +85,19 @@ the version. rc collapses to the release line (`0.1.8-rc.1` → `manager-v0.1.8`
 The tag is cut at the **HEAD of the branch the workflow was dispatched on** (`--ref`,
 or the UI branch dropdown), and is **force-moved** there if it already exists.
 
-Re-dispatch it as new wrapper versions land: a manager in Layer-2 fallback reads the
-catalog through its tag, so a tag left behind pins that manager to the catalog as of
-its release day. The invariant is that the tag stays **parseable** by that manager —
-see [`docs/manager-compat.md`](docs/manager-compat.md), which covers the one case
-where it must stop advancing (a `schema_version` bump).
+**Advancing the tag afterwards is automatic.** Every push to `main` that touches
+the catalog runs `move-line-tags` (in **Validate catalog**), which force-moves each
+existing line tag onto the validated commit. Dispatch the workflow above to *open*
+a line; you do not have to remember it again.
+
+A manager in Layer-2 fallback reads the catalog through its tag, so a tag left
+behind pins that manager to the catalog as of its release day — which is exactly
+what happened before this was automated (0.1.8 and 0.1.9 were never tagged at all,
+and 0.1.7 sat five months stale). The invariant is that the tag stays **parseable**
+by that manager, and the mover enforces it rather than trusting anyone to remember:
+it refuses to advance a line past a `schema_version` bump or above an index-level
+`minimumRequiredManagerVersion`. See
+[`docs/manager-compat.md`](docs/manager-compat.md).
 
 > A workflow in **pinta-manager** can't do this — its `GITHUB_TOKEN` is scoped to
 > pinta-manager and can't tag another repo. That's why the tagging job lives here.
