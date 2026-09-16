@@ -105,13 +105,23 @@ the version. See [`../PUBLISHING.md`](../PUBLISHING.md).
 The tag is cut at the **HEAD of the branch the workflow was dispatched on**, and
 is **force-moved** there if it already exists.
 
-A `manager-v*` tag is a **moving pointer, not a frozen snapshot** — re-dispatch it
-whenever new wrapper versions land. A manager in Layer-2 fallback reads the
-catalog *through* its tag, so a tag frozen at release time would pin that manager
-to the catalog as it existed the day it shipped: still running, but never seeing
-any adaptor version published afterwards. Advancing the tag is what keeps old
-managers current. (This is also why create-if-absent is wrong here: every rc
-collapses onto one release line, so the tag would freeze at the first rc.)
+A `manager-v*` tag is a **moving pointer, not a frozen snapshot**. A manager in
+Layer-2 fallback reads the catalog *through* its tag, so a tag frozen at release
+time would pin that manager to the catalog as it existed the day it shipped:
+still running, but never seeing any adaptor version published afterwards.
+Advancing the tag is what keeps old managers current. (This is also why
+create-if-absent is wrong here: every rc collapses onto one release line, so the
+tag would freeze at the first rc.)
+
+**This advance is automatic.** `move-line-tags` runs on every validated push to
+`main` and force-moves each existing line tag onto that commit
+(`scripts/move-line-tags.mjs`, wired in `.github/workflows/validate-catalog.yml`).
+Dispatching **Tag manager release** is only how a line is *opened*.
+
+Relying on a person to re-dispatch is what this replaces, and the record was
+poor: `manager-v0.1.8` and `manager-v0.1.9` were never cut, and `manager-v0.1.7`
+spent five months handing Layer-2 managers a `pinta-copilot 0.3.1` — including
+the false positives that had since been fixed.
 
 The invariant is not immutability but **parseability**: the tag must point at a
 catalog state that manager version can still read. `main` satisfies that by
@@ -120,8 +130,18 @@ construction — the additive-schema discipline above is exactly what guarantees
 
 The one exception is a **`schema_version` bump**, which by definition makes `main`
 unparseable to older managers. That is why rule 2 says to publish the `manager-v*`
-tags *first*, pinned at the last pre-bump commit: after the bump, dispatching an
-old line from `main` would repoint its tag at a state that manager cannot read,
+tags *first*, pinned at the last pre-bump commit: after the bump, advancing an old
+line onto `main` would repoint its tag at a state that manager cannot read,
 collapsing the middle rung of the fallback chain and dropping it to the last-good
-local cache. The workflow cannot detect this — once a line's tag is parked ahead
-of a bump, stop re-dispatching it.
+local cache.
+
+**The mover detects this, so the exception no longer depends on anyone noticing
+it.** Before moving a line it compares `schema_version` at the tag's *current*
+commit with the target's; a difference means the tag was parked deliberately, and
+it is left exactly where it was put. It also skips any line below a top-level
+`minimumRequiredManagerVersion`. A parked line simply stops advancing on its own —
+pin it once, before the bump, and nothing has to be remembered afterwards.
+
+Both refusals are covered by `scripts/move-line-tags.test.sh`, which builds the
+bump and floor situations rather than asserting them, since the live catalog has
+never had either.

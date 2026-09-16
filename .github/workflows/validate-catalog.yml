@@ -35,6 +35,12 @@ jobs:
       - name: catalog:check
         run: bun run catalog:check
 
+      # The line-tag mover decides what the push job below will do to live
+      # fallback pointers, and its two refusals (schema bump, index floor) have
+      # never occurred in this repo — so they are built rather than asserted.
+      - name: line tag guards
+        run: bash scripts/move-line-tags.test.sh
+
       # History rules (immutable published manifests, no healthy removals) — needs the
       # base revision, so PR-only.
       - name: Fetch base
@@ -59,3 +65,30 @@ jobs:
           else
             echo "No manifest YAML changed — skipping artifact fetch."
           fi
+
+  # Keep every manager line's Layer-2 fallback pointing at the catalog it should
+  # see. A `manager-v*` tag is a moving pointer: a manager in fallback reads the
+  # catalog *through* it, so a tag left behind pins that manager to the catalog
+  # as it existed the day it shipped. Doing this by hand was missed twice in a
+  # row, which is what PTA-320 found.
+  #
+  # Gated on `validate` so a tag is never advanced onto an index that failed its
+  # own checks, and the mover itself refuses any line that a schema bump or an
+  # index floor has parked (see scripts/move-line-tags.mjs).
+  move-line-tags:
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Advance manager line tags
+        run: bun scripts/move-line-tags.mjs --target "$GITHUB_SHA" --apply
