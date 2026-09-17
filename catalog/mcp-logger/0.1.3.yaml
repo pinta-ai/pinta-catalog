@@ -1,0 +1,52 @@
+schema_version: 1
+id: mcp-logger
+name: MCP Logger
+version: 0.1.3
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/mcp-logger/-/mcp-logger-0.1.3.tgz
+  sha256: "5e9d784f3bdae9e55e636e21d7ea8327dbd5a9358aa5f48c41624317ae59e411"
+  entrypoint: package/dist/cli/index.js
+ingest:
+  via: manager
+  type: mcp
+targets:
+  - client: claude-desktop
+    install:
+      type: mcp-config-wrap
+      detect:
+        macos: ~/Library/Application Support/Claude/claude_desktop_config.json
+        linux: ~/.config/Claude/claude_desktop_config.json
+        windows: ~/AppData/Roaming/Claude/claude_desktop_config.json
+      wrap:
+        extra_args: []
+        env_keys:
+          OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
+          OTEL_EXPORTER_OTLP_HEADERS: relay-token
+  - client: cursor
+    install:
+      type: mcp-config-wrap
+      detect:
+        macos: ~/.cursor/mcp.json
+        linux: ~/.cursor/mcp.json
+        windows: ~/.cursor/mcp.json
+      wrap:
+        extra_args: []
+        env_keys:
+          OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
+          OTEL_EXPORTER_OTLP_HEADERS: relay-token
+  - client: claude-code
+    install:
+      type: mcp-config-wrap
+      detect:
+        macos: ~/.claude.json
+        linux: ~/.claude.json
+        windows: ~/.claude.json
+      wrap:
+        extra_args: []
+        env_keys:
+          OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
+          OTEL_EXPORTER_OTLP_HEADERS: relay-token
+guard:
+  evaluates: true
