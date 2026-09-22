@@ -9,13 +9,16 @@
   "manifestFloors": {
     "//": "Per-manifest compatibility floors, lifted into index.json manifests[].minimumRequiredManagerVersion. Shape: { \"<adaptor-id>\": { \"<version>\": \"<min-manager-version>\" } }. Kept here (not in the manifest YAML) so floors never risk the manager's manifest schema. Example: { \"pinta-cc\": { \"2.0.0\": \"0.1.8\" } }.",
     "pinta-cc": {
-      "1.8.0": "0.1.11"
-    },
-    "pinta-codex": {
+      "1.8.0": "0.1.11",
       "1.9.0": "0.1.11"
     },
+    "pinta-codex": {
+      "1.9.0": "0.1.11",
+      "1.10.0": "0.1.11"
+    },
     "pinta-copilot": {
-      "0.8.0": "0.1.11"
+      "0.8.0": "0.1.11",
+      "0.9.0": "0.1.11"
     },
     "pinta-gemini": {
       "0.11.0": "0.1.11",
