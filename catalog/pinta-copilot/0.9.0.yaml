@@ -1,0 +1,25 @@
+schema_version: 1
+id: pinta-copilot
+name: Pinta Copilot
+version: 0.9.0
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-copilot/-/pinta-copilot-0.9.0.tgz
+  sha256: "a385742016fff77a52985e2c57b8d2368088c2430cd47461896455c69cf5c117"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: copilot
+targets:
+  # CLI and VS Code share ~/.copilot/hooks/. Enrollment builds the per-event
+  # hook commands and injects the guard endpoint and relay credentials.
+  - client: copilot
+    install:
+      type: copilot
+      dist_root: package/dist
+      env_file_keys:
+        COPILOT_PLUGIN_OPTION_ENDPOINT: relay-endpoint
+        COPILOT_PLUGIN_OPTION_HEADERS: relay-token
+guard:
+  evaluates: true
