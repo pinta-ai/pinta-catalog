@@ -1,0 +1,26 @@
+schema_version: 1
+id: pinta-musecode
+name: Pinta Muse Code
+version: 0.4.0
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-musecode/-/pinta-musecode-0.4.0.tgz
+  sha256: "5f055f9eeb4faa02916bb040ac3bbddce271d264e3ca5e8bec7755fbc852985d"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: musecode
+targets:
+  # Muse's hook contract is observed from its binary, not a published API.
+  - client: musecode
+    install:
+      type: musecode
+      dist_root: package/dist
+      hooks_template: package/hooks/managed-hooks.template.json
+      env_file_keys:
+        # The relay endpoint already includes /v1/traces.
+        OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
+        OTEL_EXPORTER_OTLP_HEADERS: relay-token
+guard:
+  evaluates: true
