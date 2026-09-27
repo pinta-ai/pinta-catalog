@@ -1,11 +1,17 @@
 {
   "schema_version": 1,
-  "generated": "2026-09-22T02:42:08.465Z",
+  "generated": "2026-09-27T03:41:11.588Z",
   "adaptors": [
     {
       "id": "mcp-logger",
       "latest": "0.1.3",
       "manifests": [
+        {
+          "version": "0.3.1",
+          "url": "mcp-logger/0.3.1.yaml",
+          "sha256": "ae3b0b1785b7e59794e400255a95538237fdb32fc4419dc317e997925194a595",
+          "minimumRequiredManagerVersion": "0.1.11"
+        },
         {
           "version": "0.3.0",
           "url": "mcp-logger/0.3.0.yaml",
