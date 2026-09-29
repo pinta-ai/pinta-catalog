@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-09-29T17:48:16.095Z",
+  "generated": "2026-09-29T18:56:46.656Z",
   "adaptors": [
     {
       "id": "mcp-logger",
@@ -46,6 +46,12 @@
       "id": "pinta-cc",
       "latest": "1.7.1",
       "manifests": [
+        {
+          "version": "1.10.1",
+          "url": "pinta-cc/1.10.1.yaml",
+          "sha256": "83df0446fbff2e5d173988db94f00c3c49edd39c6c7e1afeef5ba215e0af7f47",
+          "minimumRequiredManagerVersion": "0.1.14"
+        },
         {
           "version": "1.10.0",
           "url": "pinta-cc/1.10.0.yaml",
@@ -243,6 +249,12 @@
       "id": "pinta-copilot",
       "latest": "0.7.0",
       "manifests": [
+        {
+          "version": "0.10.1",
+          "url": "pinta-copilot/0.10.1.yaml",
+          "sha256": "464323b673bf693e45a7e5068073db47e8516ba2828211b0b8a88e038ca79a91",
+          "minimumRequiredManagerVersion": "0.1.14"
+        },
         {
           "version": "0.10.0",
           "url": "pinta-copilot/0.10.0.yaml",
