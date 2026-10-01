@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "minimumRequiredManagerVersion": "0.1.16",
+  "generated": "2026-10-01T07:48:56.206Z",
+  "adaptors": [
+    {
+      "id": "mcp-logger",
+      "latest": "0.3.5-skax.0",
+      "manifests": [
+        {
+          "version": "0.3.5-skax.0",
+          "url": "mcp-logger/0.3.5-skax.0.yaml",
+          "sha256": "6ab524ef024c0941391b9bb17d56dc1acc1625a10705619513f01c4974ff96ed",
+          "minimumRequiredManagerVersion": "0.1.16"
+        }
+      ]
+    },
+    {
+      "id": "pinta-cc",
+      "latest": "1.10.3-skax.0",
+      "manifests": [
+        {
+          "version": "1.10.3-skax.0",
+          "url": "pinta-cc/1.10.3-skax.0.yaml",
+          "sha256": "64b12cbad763ee8324bbf64d61021055f5204ddd0883a84d6eda068ffdc9aa5b",
+          "minimumRequiredManagerVersion": "0.1.16"
+        }
+      ]
+    },
+    {
+      "id": "pinta-codex",
+      "latest": "1.11.2-skax.0",
+      "manifests": [
+        {
+          "version": "1.11.2-skax.0",
+          "url": "pinta-codex/1.11.2-skax.0.yaml",
+          "sha256": "044b2f4afed4647949d94abf0de5a3873f8cff37e3f35560f1b781aaa939f6fb",
+          "minimumRequiredManagerVersion": "0.1.16"
+        }
+      ]
+    },
+    {
+      "id": "pinta-copilot",
+      "latest": "0.10.3-skax.0",
+      "manifests": [
+        {
+          "version": "0.10.3-skax.0",
+          "url": "pinta-copilot/0.10.3-skax.0.yaml",
+          "sha256": "7e994c18606fe86e8246c3295e1db06d1fce88b115cb1c9064433a7fd82e3334",
+          "minimumRequiredManagerVersion": "0.1.16"
+        }
+      ]
+    },
+    {
+      "id": "pinta-gemini",
+      "latest": "0.13.2-skax.0",
+      "manifests": [
+        {
+          "version": "0.13.2-skax.0",
+          "url": "pinta-gemini/0.13.2-skax.0.yaml",
+          "sha256": "b4927b6fd6a20a93c63f9cee61e9a57ae27a0b5c8e9ed7aa17794675b8c89aa7",
+          "minimumRequiredManagerVersion": "0.1.16"
+        }
+      ]
+    },
+    {
+      "id": "pinta-musecode",
+      "latest": "0.4.3-skax.0",
+      "manifests": [
+        {
+          "version": "0.4.3-skax.0",
+          "url": "pinta-musecode/0.4.3-skax.0.yaml",
+          "sha256": "dd62aec23e604a800e81855d664908a90b9a41639c38ba3aba321e4484901958",
+          "minimumRequiredManagerVersion": "0.1.16"
+        }
+      ]
+    },
+    {
+      "id": "pinta-opencode",
+      "latest": "0.11.3-skax.0",
+      "manifests": [
+        {
+          "version": "0.11.3-skax.0",
+          "url": "pinta-opencode/0.11.3-skax.0.yaml",
+          "sha256": "75953c17899fa16a662942553c010f6b180e80b82c0e7b9682b48fd60f71d2d7",
+          "minimumRequiredManagerVersion": "0.1.16"
+        }
+      ]
+    }
+  ]
+}
