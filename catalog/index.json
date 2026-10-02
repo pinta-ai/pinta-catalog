@@ -1,11 +1,17 @@
 {
   "schema_version": 1,
-  "generated": "2026-09-30T17:41:24.298Z",
+  "generated": "2026-10-02T21:43:07.648Z",
   "adaptors": [
     {
       "id": "mcp-logger",
       "latest": "0.1.3",
       "manifests": [
+        {
+          "version": "0.3.4",
+          "url": "mcp-logger/0.3.4.yaml",
+          "sha256": "1ce4da5889bb4744f9b0c3e8303978ba95dca34474e1cf096667d7acb2a42a9c",
+          "minimumRequiredManagerVersion": "0.1.16"
+        },
         {
           "version": "0.3.3",
           "url": "mcp-logger/0.3.3.yaml",
@@ -432,6 +438,17 @@
           "version": "0.1.0",
           "url": "pinta-musecode/0.1.0.yaml",
           "sha256": "7de3814beaeac4a68e639861fbe9e593028001d2f7d64bc20704d92c7af632e4"
+        }
+      ]
+    },
+    {
+      "id": "pinta-cursor-cli",
+      "latest": "0.1.0",
+      "manifests": [
+        {
+          "version": "0.1.0",
+          "url": "pinta-cursor-cli/0.1.0.yaml",
+          "sha256": "15427cf55d01846565c7208c857d7cf1523a826afbcf46409e9843466131dfe2"
         }
       ]
     }
