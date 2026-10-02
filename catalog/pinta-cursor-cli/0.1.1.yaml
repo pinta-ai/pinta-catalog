@@ -1,0 +1,32 @@
+schema_version: 1
+id: pinta-cursor-cli
+name: Pinta Cursor CLI
+version: 0.1.1
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://github.com/pinta-ai/pinta-cursor-cli/releases/download/v0.1.1/pinta-ai-pinta-cursor-cli-0.1.1.tgz
+  sha256: "20cea158be5f8ad24ebcac948c07f4506f3e0d2ecc6e1be5803e86575bdc1806"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: cursor
+targets:
+  - client: cursor
+    install:
+      type: cursor-hooks
+      dist_root: package/dist
+      hooks_template: package/hooks/hooks.template.json
+      env_file_keys:
+        OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
+        OTEL_EXPORTER_OTLP_HEADERS: relay-token
+  - client: cursor-cli
+    install:
+      type: cursor-hooks
+      dist_root: package/dist
+      hooks_template: package/hooks/hooks.template.json
+      env_file_keys:
+        OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: relay-endpoint
+        OTEL_EXPORTER_OTLP_HEADERS: relay-token
+guard:
+  evaluates: true

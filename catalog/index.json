@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-02T21:43:07.648Z",
+  "generated": "2026-10-02T21:51:55.109Z",
   "adaptors": [
     {
       "id": "mcp-logger",
@@ -443,8 +443,13 @@
     },
     {
       "id": "pinta-cursor-cli",
-      "latest": "0.1.0",
+      "latest": "0.1.1",
       "manifests": [
+        {
+          "version": "0.1.1",
+          "url": "pinta-cursor-cli/0.1.1.yaml",
+          "sha256": "de9cbd766f6eb49c586882e0d9fde1bab1030502fc23c7b5379e135d1e1eb42b"
+        },
         {
           "version": "0.1.0",
           "url": "pinta-cursor-cli/0.1.0.yaml",
