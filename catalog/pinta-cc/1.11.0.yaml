@@ -1,0 +1,24 @@
+schema_version: 1
+id: pinta-cc
+name: Pinta CC
+version: 1.11.0
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-cc/-/pinta-cc-1.11.0.tgz
+  sha256: "81e5c8c26f68bd928547d103e6e4d818219afff200df8732c92a2c0c40213a7e"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: cc
+targets:
+  - client: claude-code-plugin
+    install:
+      type: claude-code-plugin
+      plugin_slug: pinta-cc@pinta-ai
+      plugin_root: package
+      user_config:
+        endpoint: relay-endpoint
+        api_key: relay-token-raw
+guard:
+  evaluates: true
