@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-11T16:11:19.199Z",
+  "generated": "2026-10-11T20:08:28.343Z",
   "adaptors": [
     {
       "id": "mcp-logger",
@@ -64,6 +64,12 @@
       "id": "pinta-cc",
       "latest": "1.7.1",
       "manifests": [
+        {
+          "version": "1.11.2",
+          "url": "pinta-cc/1.11.2.yaml",
+          "sha256": "c94471cd1021956c05c1f379b2e0c72b09f8327f8d98daeb925ed6559bbc968f",
+          "minimumRequiredManagerVersion": "0.1.14"
+        },
         {
           "version": "1.11.1",
           "url": "pinta-cc/1.11.1.yaml",
