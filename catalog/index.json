@@ -1,11 +1,17 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-02T22:05:34.184Z",
+  "generated": "2026-10-11T14:50:08.716Z",
   "adaptors": [
     {
       "id": "mcp-logger",
       "latest": "0.1.3",
       "manifests": [
+        {
+          "version": "0.4.0",
+          "url": "mcp-logger/0.4.0.yaml",
+          "sha256": "f31c12c92a6dc27df0d7b547c7d56ec14d94321025590e4b7ec551b773efb52f",
+          "minimumRequiredManagerVersion": "0.1.16"
+        },
         {
           "version": "0.3.4",
           "url": "mcp-logger/0.3.4.yaml",
@@ -58,6 +64,12 @@
       "id": "pinta-cc",
       "latest": "1.7.1",
       "manifests": [
+        {
+          "version": "1.11.0",
+          "url": "pinta-cc/1.11.0.yaml",
+          "sha256": "2d5902a0f3fae0cc04e392414c0a19adf3e490bf0ed5b3d0eb70a1b77cb63f46",
+          "minimumRequiredManagerVersion": "0.1.14"
+        },
         {
           "version": "1.10.3",
           "url": "pinta-cc/1.10.3.yaml",
@@ -151,6 +163,12 @@
       "latest": "1.8.0",
       "manifests": [
         {
+          "version": "1.12.0",
+          "url": "pinta-codex/1.12.0.yaml",
+          "sha256": "d4afa38431d11f3482a5d6a12597e35aa0e68f212c88bea1a01b3baa447d0593",
+          "minimumRequiredManagerVersion": "0.1.14"
+        },
+        {
           "version": "1.11.1",
           "url": "pinta-codex/1.11.1.yaml",
           "sha256": "60a068feecdd18bb0014bd40aeca3cb75cc5effaf324a133cfbef8ea271156bd",
@@ -226,6 +244,12 @@
       "latest": "0.10.0",
       "manifests": [
         {
+          "version": "0.14.0",
+          "url": "pinta-gemini/0.14.0.yaml",
+          "sha256": "e7240d83c123a7e92642b505968a1c63a4c3e1e900b8a66021a08d7bce1b25da",
+          "minimumRequiredManagerVersion": "0.1.14"
+        },
+        {
           "version": "0.13.1",
           "url": "pinta-gemini/0.13.1.yaml",
           "sha256": "2fecdddc4d1939ac24aaaa3f4f6b74b2bd6d27335f36be03c705224b0a28faa3",
@@ -285,6 +309,12 @@
       "id": "pinta-copilot",
       "latest": "0.7.0",
       "manifests": [
+        {
+          "version": "0.11.0",
+          "url": "pinta-copilot/0.11.0.yaml",
+          "sha256": "460e47ae0741475667cf8abfde887ec9c96db75122836df73eede23d10360bf6",
+          "minimumRequiredManagerVersion": "0.1.14"
+        },
         {
           "version": "0.10.2",
           "url": "pinta-copilot/0.10.2.yaml",
@@ -346,6 +376,12 @@
       "id": "pinta-opencode",
       "latest": "0.8.0",
       "manifests": [
+        {
+          "version": "0.12.0",
+          "url": "pinta-opencode/0.12.0.yaml",
+          "sha256": "a6d4a82cc6ac331e2d15c41471c11975b5ad24d51ebc1c1595773c39bdfd9c12",
+          "minimumRequiredManagerVersion": "0.1.14"
+        },
         {
           "version": "0.11.2",
           "url": "pinta-opencode/0.11.2.yaml",
