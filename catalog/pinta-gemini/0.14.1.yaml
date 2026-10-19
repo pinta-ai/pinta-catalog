@@ -1,0 +1,24 @@
+schema_version: 1
+id: pinta-gemini
+name: Pinta Gemini
+version: 0.14.1
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-gemini/-/pinta-gemini-0.14.1.tgz
+  sha256: "cf6b33e1e4a6674954a3ff173ceecc35525242d5064afb5a5a5e5e2b87aa3d9d"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: gemini
+targets:
+  # The shared adaptor covers Gemini CLI and Antigravity; enrollment chooses the host.
+  - client: gemini
+    install:
+      type: gemini-plugin
+      dist_root: package/dist
+      env_file_keys:
+        GEMINI_PLUGIN_OPTION_ENDPOINT: relay-endpoint
+        GEMINI_PLUGIN_OPTION_HEADERS: relay-token
+guard:
+  evaluates: true
