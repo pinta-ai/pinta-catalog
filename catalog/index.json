@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-11T20:08:28.343Z",
+  "generated": "2026-10-19T14:14:17.243Z",
   "adaptors": [
     {
       "id": "mcp-logger",
@@ -62,8 +62,13 @@
     },
     {
       "id": "pinta-cc",
-      "latest": "1.7.1",
+      "latest": "1.11.3",
       "manifests": [
+        {
+          "version": "1.11.3",
+          "url": "pinta-cc/1.11.3.yaml",
+          "sha256": "b0307e42982f6186c3721623f100b7f1d7e438d38a0e1a446f536cfe3f196eef"
+        },
         {
           "version": "1.11.2",
           "url": "pinta-cc/1.11.2.yaml",
@@ -172,8 +177,13 @@
     },
     {
       "id": "pinta-codex",
-      "latest": "1.8.0",
+      "latest": "1.12.1",
       "manifests": [
+        {
+          "version": "1.12.1",
+          "url": "pinta-codex/1.12.1.yaml",
+          "sha256": "1c5e63260750d7aa02d49dd52af9c918e0f887fe316539923cd241ccff161bc6"
+        },
         {
           "version": "1.12.0",
           "url": "pinta-codex/1.12.0.yaml",
@@ -253,8 +263,13 @@
     },
     {
       "id": "pinta-gemini",
-      "latest": "0.10.0",
+      "latest": "0.14.1",
       "manifests": [
+        {
+          "version": "0.14.1",
+          "url": "pinta-gemini/0.14.1.yaml",
+          "sha256": "b3f2ae179e843445fdf0bc996d3b2ff294e3122cd51176b334f6d451fe62986e"
+        },
         {
           "version": "0.14.0",
           "url": "pinta-gemini/0.14.0.yaml",
@@ -319,8 +334,13 @@
     },
     {
       "id": "pinta-copilot",
-      "latest": "0.7.0",
+      "latest": "0.11.1",
       "manifests": [
+        {
+          "version": "0.11.1",
+          "url": "pinta-copilot/0.11.1.yaml",
+          "sha256": "2e724dc558829261949f2fd45b81b0264bb889cfa52e735f097af22b11533870"
+        },
         {
           "version": "0.11.0",
           "url": "pinta-copilot/0.11.0.yaml",
@@ -386,8 +406,13 @@
     },
     {
       "id": "pinta-opencode",
-      "latest": "0.8.0",
+      "latest": "0.12.1",
       "manifests": [
+        {
+          "version": "0.12.1",
+          "url": "pinta-opencode/0.12.1.yaml",
+          "sha256": "84a214c4f696fcff34f5d5935c7f81ea7b92804c085018bf701e012287409a08"
+        },
         {
           "version": "0.12.0",
           "url": "pinta-opencode/0.12.0.yaml",
@@ -447,8 +472,13 @@
     },
     {
       "id": "pinta-musecode",
-      "latest": "0.2.0",
+      "latest": "0.4.3",
       "manifests": [
+        {
+          "version": "0.4.3",
+          "url": "pinta-musecode/0.4.3.yaml",
+          "sha256": "ec024716cdf6e0bda8e705c86cc11b100d24ff511a563816585a638aad768429"
+        },
         {
           "version": "0.4.2",
           "url": "pinta-musecode/0.4.2.yaml",
