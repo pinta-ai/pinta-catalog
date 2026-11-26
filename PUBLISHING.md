@@ -25,6 +25,7 @@ bun's built-in `Bun.YAML` and `Bun.semver`, so there is nothing to install.
 | `bun run catalog:build` | regenerate `catalog/index.json` from the manifest YAMLs + `catalog.config.json` (computes sha256, sets `latest`, sorts) |
 | `bun run catalog:check` | validate without writing (what CI runs) |
 | `bun run catalog:verify-artifacts` | `catalog:check` + fetch every npm tarball and check `artifact.sha256` |
+| `bun run catalog:test` | test stable selection and explicit Stage approval validation |
 
 ## Add / update an adaptor version (the happy path)
 
@@ -37,18 +38,47 @@ bun's built-in `Bun.YAML` and `Bun.semver`, so there is nothing to install.
 
 ## `latest` and compatibility floors
 
-- `latest` is set by the generator to the **newest floor-blind-safe version** — the
+- `latest` is set by the generator to the **newest floor-blind-safe stable version** — the
   newest version an old manager that doesn't understand floors can safely install
   (it installs `latest` blindly). While pre-v0.1.8 managers exist, that means the
   newest **floor-free** version. Do not point `latest` at a floor-gated version by
   hand; the generator won't, and CI blocks it. (Why: §0.4 / §2.2.)
 - To gate a version behind a manager version, add it to
   `catalog.config.json → manifestFloors`, e.g. `{ "pinta-cc": { "2.0.0": "0.1.8" } }`.
-  Floor-aware managers auto-pick the newest version they support; older ones stay on
-  `latest`. Floors live in config (not the YAML) so they never touch the manager's
+  Floor-aware managers prefer compatible stable versions; a floor is not approval
+  to select a prerelease. Older managers stay on `latest`. Floors live in config (not the YAML) so they never touch the manager's
   manifest schema.
 - Raising `oldestSupportedFloorBlind` (letting `latest` advance into floored versions)
   is a deliberate call — only once the old cohort is retired.
+
+## Explicit Stage approval
+
+Publish and verify the immutable artifact first, then add its manifest and a
+manager floor. To approve it for Stage, add the exact version under
+`catalog.config.json → stageVersions`:
+
+```json
+{
+  "manifestFloors": { "pinta-cc": { "1.11.4-pta1010.1": "0.2.2" } },
+  "stageVersions": { "pinta-cc": "1.11.4-pta1010.1" }
+}
+```
+
+The generator emits `stageVersion` on the adaptor's index entry. It rejects an
+unknown adaptor, a stable or nonexistent version, or an approval without a floor.
+`latest` remains stable. Run `catalog:build`, `catalog:test`, `catalog:check`, and
+`catalog:verify-artifacts` before opening the PR.
+
+Managers supporting this field honor it only for the Stage backend. They try the
+approved compatible version before stable, never another unapproved prerelease.
+Production and local dev selection are unchanged. Older managers ignore the
+optional field; the floor keeps the new artifact away from incompatible managers.
+
+To roll back, approve a previous verified prerelease or remove its approval to
+return to stable. Keep all old manifests and artifact bytes intact. Stage polling
+notices approval-only changes even when `latest` is unchanged. A catalog merge
+proves publication, not device adoption: verify the selected/installed version and
+actual native telemetry stamp, and restart long-lived hosts when needed.
 
 ## Immutability & pruning
 
