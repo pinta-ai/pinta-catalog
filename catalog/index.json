@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-19T14:24:27.178Z",
+  "generated": "2026-11-26T06:53:28.114Z",
   "adaptors": [
     {
       "id": "mcp-logger",
       "latest": "0.4.1",
+      "stageVersion": "0.4.2-dev.1010",
       "manifests": [
+        {
+          "version": "0.4.2-dev.1010",
+          "url": "mcp-logger/0.4.2-dev.1010.yaml",
+          "sha256": "7aef2ad6507df2efd714655dd3b223f74f7bfacc023600151f372ecf79ddef17",
+          "minimumRequiredManagerVersion": "0.2.2"
+        },
         {
           "version": "0.4.1",
           "url": "mcp-logger/0.4.1.yaml",
@@ -68,7 +75,14 @@
     {
       "id": "pinta-cc",
       "latest": "1.11.3",
+      "stageVersion": "1.11.4-pta1010.1",
       "manifests": [
+        {
+          "version": "1.11.4-pta1010.1",
+          "url": "pinta-cc/1.11.4-pta1010.1.yaml",
+          "sha256": "1255c8fd299fced6315718bde7116eb9ed3388176c775ceb619c7bd8be99e3c6",
+          "minimumRequiredManagerVersion": "0.2.2"
+        },
         {
           "version": "1.11.3",
           "url": "pinta-cc/1.11.3.yaml",
@@ -183,7 +197,14 @@
     {
       "id": "pinta-codex",
       "latest": "1.12.1",
+      "stageVersion": "1.12.3-pta1010.1",
       "manifests": [
+        {
+          "version": "1.12.3-pta1010.1",
+          "url": "pinta-codex/1.12.3-pta1010.1.yaml",
+          "sha256": "c2f041de1f9b0d30a003a6d0707caf428fffa2aba3d724c1bdd3ae76f863ecd7",
+          "minimumRequiredManagerVersion": "0.2.2"
+        },
         {
           "version": "1.12.1",
           "url": "pinta-codex/1.12.1.yaml",
@@ -269,7 +290,14 @@
     {
       "id": "pinta-gemini",
       "latest": "0.14.1",
+      "stageVersion": "0.14.2-pta1010.1",
       "manifests": [
+        {
+          "version": "0.14.2-pta1010.1",
+          "url": "pinta-gemini/0.14.2-pta1010.1.yaml",
+          "sha256": "e875f41f3a8583473bb2d2f6595909d8fe99789702f8ea12c02fb21bd95296eb",
+          "minimumRequiredManagerVersion": "0.2.2"
+        },
         {
           "version": "0.14.1",
           "url": "pinta-gemini/0.14.1.yaml",
@@ -340,7 +368,14 @@
     {
       "id": "pinta-copilot",
       "latest": "0.11.1",
+      "stageVersion": "0.12.1-pta1010.1",
       "manifests": [
+        {
+          "version": "0.12.1-pta1010.1",
+          "url": "pinta-copilot/0.12.1-pta1010.1.yaml",
+          "sha256": "0783805ddb47ffe340e9749bf444d1501845018ebbea57f12483cd2995e4a1e4",
+          "minimumRequiredManagerVersion": "0.2.2"
+        },
         {
           "version": "0.11.1",
           "url": "pinta-copilot/0.11.1.yaml",
@@ -412,7 +447,14 @@
     {
       "id": "pinta-opencode",
       "latest": "0.12.1",
+      "stageVersion": "0.12.2-pta1010.1",
       "manifests": [
+        {
+          "version": "0.12.2-pta1010.1",
+          "url": "pinta-opencode/0.12.2-pta1010.1.yaml",
+          "sha256": "a1b612390e73b08fffa1944c4bd20f3fd36d99f97ce4b51b2a244ecc1beab89a",
+          "minimumRequiredManagerVersion": "0.2.2"
+        },
         {
           "version": "0.12.1",
           "url": "pinta-opencode/0.12.1.yaml",
@@ -478,7 +520,14 @@
     {
       "id": "pinta-musecode",
       "latest": "0.4.3",
+      "stageVersion": "0.4.4-pta1010.1",
       "manifests": [
+        {
+          "version": "0.4.4-pta1010.1",
+          "url": "pinta-musecode/0.4.4-pta1010.1.yaml",
+          "sha256": "068ebe91885d964e7908677445626bb51ade2c9e797b88446233f05f70ae3ffd",
+          "minimumRequiredManagerVersion": "0.2.2"
+        },
         {
           "version": "0.4.3",
           "url": "pinta-musecode/0.4.3.yaml",
@@ -533,7 +582,14 @@
     {
       "id": "pinta-cursor-cli",
       "latest": "0.1.1",
+      "stageVersion": "0.1.2-pta1010.1",
       "manifests": [
+        {
+          "version": "0.1.2-pta1010.1",
+          "url": "pinta-cursor-cli/0.1.2-pta1010.1.yaml",
+          "sha256": "8bcfc7c89433adf95ec567d880b97b83751e5f4510f689965aa73e189bb0329f",
+          "minimumRequiredManagerVersion": "0.2.2"
+        },
         {
           "version": "0.1.1",
           "url": "pinta-cursor-cli/0.1.1.yaml",

@@ -35,6 +35,9 @@ jobs:
       - name: catalog:check
         run: bun run catalog:check
 
+      - name: Stage approval guards
+        run: bun run catalog:test
+
       # The line-tag mover decides what the push job below will do to live
       # fallback pointers, and its two refusals (schema bump, index floor) have
       # never occurred in this repo — so they are built rather than asserted.

@@ -48,11 +48,14 @@ const fail = (msg) => errors.push(msg);
 
 function loadConfig() {
   const cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+  const validStageMap = cfg.stageVersions !== null && typeof cfg.stageVersions === 'object' && !Array.isArray(cfg.stageVersions);
+  if (cfg.stageVersions !== undefined && !validStageMap) fail('stageVersions must be an object keyed by adaptor id');
   return {
     expectedSchemaVersion: cfg.expectedSchemaVersion ?? 1,
     oldestSupportedFloorBlind: cfg.oldestSupportedFloorBlind ?? null,
     indexMinimumRequiredManagerVersion: cfg.indexMinimumRequiredManagerVersion ?? null,
     manifestFloors: cfg.manifestFloors && typeof cfg.manifestFloors === 'object' ? cfg.manifestFloors : {},
+    stageVersions: validStageMap ? cfg.stageVersions : {},
   };
 }
 
@@ -99,6 +102,14 @@ function buildModel(config) {
     .filter((d) => d.isDirectory())
     .map((d) => d.name)
     .sort();
+
+  for (const [id, version] of Object.entries(config.stageVersions)) {
+    if (id.startsWith('//')) continue;
+    if (!adaptorIds.includes(id)) fail(`stageVersions[${id}] references an unknown adaptor`);
+    if (!isSemver(version) || !version.includes('-')) {
+      fail(`stageVersions[${id}] must be an explicit prerelease version`);
+    }
+  }
 
   const adaptors = [];
   for (const id of adaptorIds) {
@@ -149,7 +160,8 @@ function buildModel(config) {
     manifests.sort((a, b) => rcompare(a.version, b.version)); // newest first
 
     // latest = highest floor-blind-safe version.
-    const eligible = manifests.filter((m) => latestEligible(m.minimumRequiredManagerVersion, config.oldestSupportedFloorBlind));
+    const eligible = manifests.filter((m) => !m.version.includes('-')
+      && latestEligible(m.minimumRequiredManagerVersion, config.oldestSupportedFloorBlind));
     let latest;
     if (eligible.length === 0) {
       fail(
@@ -162,7 +174,13 @@ function buildModel(config) {
       latest = eligible.map((m) => m.version).sort(rcompare)[0];
     }
 
-    adaptors.push({ id, latest, manifests });
+    const stageVersion = config.stageVersions[id];
+    if (stageVersion !== undefined) {
+      const approved = manifests.find((manifest) => manifest.version === stageVersion);
+      if (!approved) fail(`stageVersions[${id}] references a missing manifest: ${stageVersion}`);
+      else if (!approved.minimumRequiredManagerVersion) fail(`stageVersions[${id}] requires a manifest compatibility floor`);
+    }
+    adaptors.push({ id, latest, ...(stageVersion === undefined ? {} : { stageVersion }), manifests });
   }
 
   const model = { schema_version: config.expectedSchemaVersion };
@@ -179,6 +197,7 @@ function normalize(index) {
     .map((a) => ({
       id: a.id,
       latest: a.latest,
+      stageVersion: a.stageVersion ?? null,
       manifests: (a.manifests ?? []).map((m) => ({
         version: m.version,
         url: m.url,
