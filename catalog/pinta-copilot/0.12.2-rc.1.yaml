@@ -1,0 +1,23 @@
+schema_version: 1
+id: pinta-copilot
+name: Pinta Copilot
+version: 0.12.2-rc.1
+runtime: node
+artifact:
+  type: npm-tarball
+  url: https://registry.npmjs.org/@pinta-ai/pinta-copilot/-/pinta-copilot-0.12.2-rc.1.tgz
+  sha256: "e6a9d01f18acb30d4ca28c2a5762a0351a299052b6ec9d5ec2e164b20a6373b1"
+  entrypoint: package/dist/index.js
+ingest:
+  via: manager
+  type: copilot
+targets:
+  - client: copilot
+    install:
+      type: copilot
+      dist_root: package/dist
+      env_file_keys:
+        COPILOT_PLUGIN_OPTION_ENDPOINT: relay-endpoint
+        COPILOT_PLUGIN_OPTION_HEADERS: relay-token
+guard:
+  evaluates: true

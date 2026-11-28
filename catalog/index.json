@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-11-26T21:40:19.671Z",
+  "generated": "2026-11-28T07:31:03.632Z",
   "adaptors": [
     {
       "id": "mcp-logger",
@@ -388,8 +388,14 @@
     {
       "id": "pinta-copilot",
       "latest": "0.12.1",
-      "stageVersion": "0.12.1-pta1010.1",
+      "stageVersion": "0.12.2-rc.1",
       "manifests": [
+        {
+          "version": "0.12.2-rc.1",
+          "url": "pinta-copilot/0.12.2-rc.1.yaml",
+          "sha256": "26af9795ca9416ab4ff6ea15f0a8b4f28b3666b1e75413c34ee469dbc2aa3c5e",
+          "minimumRequiredManagerVersion": "0.2.2"
+        },
         {
           "version": "0.12.1",
           "url": "pinta-copilot/0.12.1.yaml",
